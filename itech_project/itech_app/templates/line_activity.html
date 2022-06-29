@@ -1,0 +1,167 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>Program Logs</title>
+    <link id="favicon" rel="icon" type="image/x-icon" href="static/favicon.ico">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-1BmE4kWBq78iYhFldvKuhfTAU6auU8tT94WrHftjDbrCEXSU1oBoqyl2QvZ6jIW3" crossorigin="anonymous">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+<!--    <script type="text/javascript" charset="utf8" src="https://cdn.datatables.net/1.11.3/js/jquery.dataTables.js"></script>-->
+<!--    <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.11.3/css/jquery.dataTables.css">-->
+
+    <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/v/bs5/dt-1.11.3/datatables.min.css"/>
+
+    <script type="text/javascript" src="https://cdn.datatables.net/v/bs5/dt-1.11.3/datatables.min.js"></script>
+
+    <style>
+    table {
+  font-family: arial, sans-serif;
+  border-collapse: collapse;
+  width: 100%;
+}
+
+td, th {
+  border: 1px solid black;
+  text-align: left;
+  padding: 8px;
+}
+
+tr:nth-child(even) {
+  background-color: #dddddd;
+}
+#mySidenav a {
+          position: absolute;
+          position: fixed;
+          bottom: 20px;
+          left: -80px;
+          transition: 0.3s;
+          padding: 15px;
+          width: 100px;
+          text-decoration: none;
+          font-size: 20px;
+          color: white;
+          border-radius: 0 5px 5px 0;
+        }
+
+        #mySidenav a:hover {
+          left: 0;
+        }
+
+        #home {
+            background-color: rgba(0, 255, 75, 0.4);
+        }
+
+        #home:hover {
+            background-color: #04AA6D;
+        }
+
+        #myBtn {
+      display: none;
+      position: fixed;
+      bottom: 20px;
+      right: 30px;
+      z-index: 99;
+      font-size: 18px;
+      border: none;
+      outline: none;
+      background-color: rgba(255, 99, 71, 0.6);
+      color: white;
+      cursor: pointer;
+      padding: 15px;
+      border-radius: 4px;
+    }
+
+    #myBtn:hover {
+      background-color: rgba(255, 80, 71, 1.0);
+    }
+
+</style>
+</head>
+<body>
+<h2>Line activity monitor</h2>
+<button onclick="topFunction()" id="myBtn" title="Go to top">Top</button>
+
+<div id="mySidenav" class="sidenav">
+    <a href="/" id="home">Home</a>
+</div>
+    <div class="row" style="margin-bottom:15px; margin-top:15px; margin-left:1px;">
+        <form style="display:inline; padding:5px" method="GET" >{% csrf_token %}
+            <b>Date:</b>{{form.Date}}
+            <b>Shift:</b>{{form.Shift}}
+            <b>NrPRM:</b>{{form.NrPRM}}
+            <b>Delta >= </b>{{form.DeltaTime}}
+            <button style="width:100px; height:35px; margin-top:-5px; margin-left:10px" type="submit" class="btn btn-outline-dark"><b>Filtruj</b></button>
+        </form>
+</div>
+<table id="table_id" class="display">
+    <thead><tr>
+        <th>NrBelki</th>
+        <th>NrTrawersy</th>
+        <th>DataWejścia</th>
+        <th>DataWyjścia</th>
+        <th>CzasPrzebZadany</th>
+        <th>CzasPrzebFaktyczny</th>
+        <th>DeltaTime[s]</th>
+        <th>NazwaObszaru</th>
+        <th>KodObszaru</th>
+        <th>NumerProgramu</th>
+        <th>NazwaProgramu</th>
+        <th>KtlPmc</th>
+        <th>KtlNapPw</th>
+        <th>KtlNap</th>
+
+    <tbody>
+    {% for row in result %}
+        <tr>
+            <td>{{row.0}}</td>
+            <td>{{row.1}}</td>
+            <td style="white-space: nowrap; text-align:left;">{{row.2}}</td>
+            <td style="white-space: nowrap; text-align:left;">{{row.3}}</td>
+            <td>{{row.4}}</td>
+            <td>{{row.5}}</td>
+            <td style="white-space: nowrap; text-align:left;">{{row.6}}</td>
+            <td>{{row.7}}</td>
+            <td>{{row.8}}</td>
+            <td style="white-space: nowrap; text-align:left;">{{row.9}}</td>
+            <td>{{row.10}}</td>
+            <td>{{row.11}}</td>
+            <td>{{row.12}}</td>
+            <td>{{row.13}}</td>
+        </tr>
+
+    {% endfor %}
+
+    </tbody>
+</table>
+<script>
+//Get the button
+var mybutton = document.getElementById("myBtn");
+
+// When the user scrolls down 20px from the top of the document, show the button
+window.onscroll = function() {scrollFunction()};
+
+function scrollFunction() {
+  if (document.body.scrollTop > 20 || document.documentElement.scrollTop > 20) {
+    mybutton.style.display = "block";
+  } else {
+    mybutton.style.display = "none";
+  }
+}
+
+// When the user clicks on the button, scroll to the top of the document
+function topFunction() {
+  document.body.scrollTop = 0;
+  document.documentElement.scrollTop = 0;
+}
+</script>
+<script>
+$(document).ready(function() {
+    $('#table_id').DataTable({
+    "order": [2, 'desc'],
+    "pageLength": 50
+
+    });
+})
+</script>
+</body>
+</html>

@@ -1,0 +1,252 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>Pack details</title>
+    <link id="favicon" rel="icon" type="image/x-icon" href="static/favicon.ico">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-1BmE4kWBq78iYhFldvKuhfTAU6auU8tT94WrHftjDbrCEXSU1oBoqyl2QvZ6jIW3" crossorigin="anonymous">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+
+    <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/v/bs5/dt-1.11.3/datatables.min.css"/>
+    <script type="text/javascript" src="https://cdn.datatables.net/v/bs5/dt-1.11.3/datatables.min.js"></script>
+
+    <style>
+    body {font-family: Arial, Helvetica, sans-serif;}
+* {box-sizing: border-box;}
+
+/* Button used to open the contact form - fixed at the bottom of the page */
+.open-button {
+  background-color: #555;
+  color: white;
+  border: none;
+  cursor: pointer;
+  opacity: 0.4;
+  position: fixed;
+  bottom: 300px;
+  right: -30px;
+  width: 80px;
+  text-align: left;
+  padding-left: 12px;
+  transition: 0.3s;
+  font-size: 60px;
+  border-radius: 20px
+}
+
+/* The popup form - hidden by default */
+.form-popup {
+  display: none;
+  position: fixed;
+  bottom: 150px;
+  right: 0px;
+  border: 3px solid #f1f1f1;
+  z-index: 9;
+}
+
+/* Add styles to the form container */
+.form-container {
+  max-width: 300px;
+  padding: 10px;
+  background-color: white;
+}
+
+/* Full-width input fields */
+.form-container input[type=number] {
+  width: 100%;
+  padding: 10px;
+  margin: 5px 0 15px 0;
+  border: none;
+  background: #f1f1f1;
+}
+
+/* When the inputs get focus, do something */
+.form-container input[type=number]:focus {
+  background-color: #ddd;
+  outline: none;
+}
+
+/* Set a style for the submit/login button */
+.form-container .btn {
+  background-color: #04AA6D;
+  color: white;
+  padding: 5px 10px;
+  border: none;
+  cursor: pointer;
+  width: 100%;
+  margin-bottom:5px;
+  opacity: 0.6;
+}
+
+/* Add a red background color to the cancel button */
+.form-container .cancel {
+  background-color: red;
+}
+
+/* Add some hover effects to buttons */
+.form-container .btn:hover, .open-button:hover {
+  opacity: 1;
+}
+    table {
+        font-family: arial, sans-serif;
+        border-collapse: collapse;
+        width: 100%;
+       }
+
+td, th {
+  border: 1px solid black;
+  text-align: left;
+  padding: 8px;
+}
+
+tr:nth-child(even) {
+  background-color: #dddddd;
+}
+tr:hover {background-color: #6397cf;}
+#mySidenav a {
+          position: absolute;
+          position: fixed;
+          bottom: 20px;
+          left: -80px;
+          transition: 0.3s;
+          padding: 15px;
+          width: 100px;
+          text-decoration: none;
+          font-size: 20px;
+          color: white;
+          border-radius: 0 5px 5px 0;
+        }
+
+        #mySidenav a:hover {
+          left: 0;
+        }
+
+        #home {
+            background-color: rgba(0, 255, 75, 0.4);
+        }
+
+        #home:hover {
+            background-color: #04AA6D;
+        }
+
+        #myBtn {
+      display: none;
+      position: fixed;
+      bottom: 20px;
+      right: 30px;
+      z-index: 99;
+      font-size: 18px;
+      border: none;
+      outline: none;
+      background-color: rgba(255, 99, 71, 0.6);
+      color: white;
+      cursor: pointer;
+      padding: 15px;
+      border-radius: 4px;
+    }
+
+    #myBtn:hover {
+      background-color: rgba(255, 80, 71, 1.0);
+    }
+
+</style>
+</head>
+<body>
+<h2>Packs details</h2>
+<button onclick="topFunction()" id="myBtn" title="Go to top">Top</button>
+
+<div id="mySidenav" class="sidenav">
+    <a href="/" id="home">Home</a>
+</div>
+
+<table id="table_id" class="table">
+    <thead><tr>
+        <th>NrPRM</th>
+        <th>NazwaProgramu</th>
+        <th>IleDetaliBelka</th>
+        <th>IleDetaliPojemnik</th>
+        <th>IleZawieszekBelka</th>
+        <th>DataMod</th>
+
+
+    <tbody>
+
+        {% for row in result %}
+        <tr style="line-height: 15px; text-align:center; vertical-align: middle;" ondblclick=location.replace("/edit_pack_detail/{{row.0}}"); title="Double-click to edit details for NrPRM: {{row.0}}")>
+                <td>{{row.0}}</td>
+                <td>{{row.1}}</td>
+                <td>{{row.2}}</td>
+                <td>{{row.3}}</td>
+                <td>{{row.4}}</td>
+                <td>{{row.5}}</td>
+
+
+            </tr>
+
+        {% endfor %}
+    </tbody>
+
+</table>
+<button class="open-button" onclick="openForm()">+</button>
+
+<div class="form-popup" id="AddForm">
+    <form action="add_pack_detail" method="POST" class="form-container">
+        <h4>Create new detail record</h4>
+        {% csrf_token %}
+        <label style="width: 100px"><b>NrPRM</b></label>
+        <input name="NrPRM_f" type="number" placeholder="Enter NrPRM" required>
+
+        <label><b>IleDetaliBelka</b></label>
+        <input name="IleDetaliBelka_f" type="number" placeholder="Enter amount" required>
+
+        <label><b>IleDetaliPojemnik</b></label>
+        <input name="IleDetaliPojemnik_f" type="number" placeholder="Enter amount" required>
+
+        <label><b>IleZawieszekBelka</b></label>
+        <input name="IleZawieszekBelka_f" type="number" placeholder="Enter amount" required>
+
+        <button style="margin-top: 10px" type="submit" class="btn">Create</button>
+        <button type="button" class="btn cancel" onclick="closeForm()">Close</button>
+    </form>
+</div>
+<script>
+//Get the button
+var mybutton = document.getElementById("myBtn");
+
+// When the user scrolls down 20px from the top of the document, show the button
+window.onscroll = function() {scrollFunction()};
+
+function scrollFunction() {
+  if (document.body.scrollTop > 20 || document.documentElement.scrollTop > 20) {
+    mybutton.style.display = "block";
+  } else {
+    mybutton.style.display = "none";
+  }
+}
+
+// When the user clicks on the button, scroll to the top of the document
+function topFunction() {
+  document.body.scrollTop = 0;
+  document.documentElement.scrollTop = 0;
+}
+</script>
+<script>
+
+$(document).ready(function() {
+    $('#table_id').DataTable({
+        "order": [0, 'asc'],
+        "pageLength": 50,
+
+    });
+})
+</script>
+<script>
+function openForm() {
+  document.getElementById("AddForm").style.display = "block";
+}
+
+function closeForm() {
+  document.getElementById("AddForm").style.display = "none";
+}
+</script>
+
+
+</body>

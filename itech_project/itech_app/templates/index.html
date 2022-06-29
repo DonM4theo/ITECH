@@ -1,0 +1,143 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <link id="favicon" rel="icon" type="image/x-icon" href="static/favicon.ico">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.0.0-beta.2/css/bootstrap.min.css" />
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
+
+    <title>Home</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-1BmE4kWBq78iYhFldvKuhfTAU6auU8tT94WrHftjDbrCEXSU1oBoqyl2QvZ6jIW3" crossorigin="anonymous">
+    <style>
+    body {
+        background-image: url('/static/bg_index.jpg');
+        background-repeat: no-repeat;
+        background-attachment: fixed;
+        background-size: cover;
+.header-section {
+    display: flex;
+    flex-wrap: wrap;
+}
+}
+a.one:link {color:#ff0000;}
+a.one:visited {color:#0000ff;}
+a.one:hover {color:#ffcc00;}
+.button {
+  display: inline-block;
+  border-radius: 12px;
+  background-color: #f4511e;
+  border: none;
+  color: #FFFFFF;
+  text-align: center;
+  font-size: 20px;
+  padding: 20px;
+  width: 200px;
+  transition: all 0.5s;
+  cursor: pointer;
+  margin: 6px;
+}
+
+.button span {
+  cursor: pointer;
+  display: inline-block;
+  position: relative;
+  transition: 0.5s;
+}
+
+.button span:after {
+  content: '\00bb';
+  position: absolute;
+  opacity: 0;
+  top: 10px;
+  right: -20px;
+  transition: 0.5s;
+}
+
+.button:hover span {
+  padding-right: 25px;
+}
+
+.button:hover span:after {
+  opacity: 1;
+  right: 0;
+}
+div.fixed {
+  position: fixed;
+  width: 100%;
+  bottom: 0px;
+  height: 28px;
+  border: 1px solid white;
+  background-color: rgba(128, 128, 128, 0.85);;
+  font-size:16px;
+  color: white;
+}
+
+</style>
+</head>
+<body>
+
+{% block content %}
+{% if user.is_authenticated %}
+<div style="clear: both; background-image: linear-gradient(63deg, rgba(38,35,35,1) 0%, rgba(215,55,2,0.8603816526610644) 50%, rgba(198,82,4,1) 100%); height: 35px; vertical-align:middle">
+    <h4 style="float: left;color:white;">
+        <a><span class="badge hours"></span></a>:<a><span class="badge min"></span></a>:<a><span class="badge sec"></span></a></h4>
+    <h5 style="float: right; color:white; padding-right:10px; padding-top:2px;">Logged as:  {{ user.username }}  <a type="button" class="btn btn-outline-dark"
+                                                                                                                    style="height: 27px; font-size: 14px; padding:4px;
+                                                                                                                           padding-top: 2px"
+                                                                                                                    href="{% url 'logout' %}"><b>Log out</b></a></h5>
+</div>
+{% else %}
+<div style="clear: both; background-image: linear-gradient(63deg, rgba(38,35,35,1) 0%, rgba(215,55,2,0.8603816526610644) 50%, rgba(198,82,4,1) 100%); height: 35px; vertical-align:middle">
+    <h4 style="float: left;color:white;">
+        <a><span class="badge hours"></span></a> :
+        <a><span class="badge min"></span></a> :
+        <a><span class="badge sec"></span></a></h4>
+    <h5 style="float: right; color:white; padding-right:10px; padding-top:2px;"><a type="button" class="btn btn-outline-dark" style="height: 27px; font-size: 14px; padding:4px;
+                                                                                                                           padding-top: 2px" href="{% url 'login' %}"><b>Log in</b></a></h5>
+</div>
+
+{% endif %}
+{% endblock %}
+
+<h1 style="text-align:center;color:white; padding-top:60px">Welcome in Itech_App</h1>
+<div style="text-align:center; font-size:24px; padding: 40px;">
+    <form action="/select">
+        <button class="button" style="vertical-align:middle"><span>Show program list </span></button>
+    </form>
+    <form action="/logs">
+        <button class="button" style="vertical-align:middle"><span>Show program logs </span></button>
+    </form>
+    <form action="/pre_create">
+        <button class="button" style="vertical-align:middle"><span>Create a new program </span></button>
+    </form>
+    <form action="/line_activity">
+        <button class="button" style="vertical-align:middle"><span>Show line activities </span></button>
+    </form>
+    <form action="/show_pack_detail">
+        <button class="button" style="vertical-align:middle"><span>Manage pack's details </span></button>
+    </form>
+</div>
+<div class="fixed">
+    <p style="margin-left: 5px"> Created by Mateusz Sebastianowicz -- Electropoli Poland Nowa Sól Plant
+        <span style="float : right; vertical-align:middle; margin-right: 5px;">Connected to: {{DB_SERVER}} -- {{DB}}</span> </p>
+
+</div>
+<script>
+$(document).ready(function() {
+setInterval( function() {
+var hours = new Date().getHours();
+$(".hours").html(( hours < 10 ? "0" : "" ) + hours);
+}, 1000);
+setInterval( function() {
+var minutes = new Date().getMinutes();
+$(".min").html(( minutes < 10 ? "0" : "" ) + minutes);
+},1000);
+setInterval( function() {
+var seconds = new Date().getSeconds();
+$(".sec").html(( seconds < 10 ? "0" : "" ) + seconds);
+},1000);
+});
+</script>
+</body>
+</html>
